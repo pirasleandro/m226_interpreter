@@ -1,4 +1,8 @@
 {
     "java.project.sourcePaths": ["src"],
-    "java.project.outputPath": "bin"
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "C:/01 Privat/Coding/Java/leandroUtils/leandroUtils.jar",
+        "c:\\01 Privat\\Coding\\Java\\libraries\\leandroUtils\\leandroUtils.jar"
+    ]
 }
