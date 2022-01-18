@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ch.tbz.pirasleandro.Token.Type;
+
 public class Lexer {
     private ArrayList<ArrayList<Token>> tokens = new ArrayList<>();
     private ArrayList<ArrayList<String>> code;
@@ -30,27 +32,38 @@ public class Lexer {
             ArrayList<Token> lineTokens = new ArrayList<>();
             // iterate through segments in [line]
             for (int j = 0; j < line.size(); j++) {
-                // iterate through every token
-                for (Token token : Token.values()) {
-                    if (token.REGEXES.length > line.size()) continue; // skip token if less segments than regexes in token
+                // iterate through every token type
+                for (Type tokenType : Type.values()) {
+                    // skip token if less segments than regexes in [tokenType]
+                    if (tokenType.REGEXES.length > line.size()) continue;
                     int matchingRegexes = 0;
-                    // iterate through [REGEXES] of [token]
-                    for (int k = 0; k < token.REGEXES.length; k++) {
+                    // iterate through [REGEXES] of [tokenType]
+                    for (int k = 0; k < tokenType.REGEXES.length; k++) {
                         // increase [matchingRegexes] if regex at [k] matches segment at [j]+[k]
                         try {
-                            if (line.get(j+k).matches(token.REGEXES[k])) matchingRegexes++;
-                            else break;
+                            if (line.get(j+k).matches(tokenType.REGEXES[k])) {
+                                matchingRegexes++;
+                                j += tokenType.REGEXES.length-1;
+                            } else break;
                         } catch (IndexOutOfBoundsException e) { break; }
                     }
                     // add token to lineTokens 
-                    if (matchingRegexes == token.REGEXES.length) {
-                        lineTokens.add(token);
+                    if (matchingRegexes == tokenType.REGEXES.length) {
+                        if (tokenType.hasVal()) {
+                            lineTokens.add(new Token(tokenType, line.get(j+tokenType.VAL_INDEX)));
+                        } else {
+                            lineTokens.add(new Token(tokenType));
+                        }
                         break;
                     }
                 }
             }
-            tokens.add(lineTokens);
+            if (lineTokens.size() > 0) tokens.add(lineTokens);
         }
+        return tokens;
+    }
+
+    public ArrayList<ArrayList<Token>> getTokens() {
         return tokens;
     }
 }
