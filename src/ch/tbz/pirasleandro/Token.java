@@ -29,6 +29,7 @@ public class Token {
         else return type + "[" + val + "]";
     }
 
+
     public enum Type {
         VALID_NAME(0, "[a-zA-Z]+[a-zA-Z0-9]*"),
         NULL(0, "NOOB"),
