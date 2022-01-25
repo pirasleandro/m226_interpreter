@@ -3,19 +3,21 @@ package ch.tbz.pirasleandro;
 import java.util.ArrayList;
 
 public class Parser {
-    @SuppressWarnings("unused")
     private ArrayList<ArrayList<Token>> tokens;
-    private ArrayList<Snippet> blocks = new ArrayList<>();
+    private ArrayList<AST> ast = new ArrayList<>();
     
     public Parser(ArrayList<ArrayList<Token>> tokens) {
         this.tokens = tokens;
     }
 
-    public ArrayList<Snippet> parse() {
-        return null; // TODO
+    public ArrayList<AST> parse() {
+        for (int i = 0; i < tokens.size(); i++) {
+            
+        }
+        return ast;
     }
 
-    public ArrayList<Snippet> getBlocks() {
-        return blocks;
+    public ArrayList<AST> getBlocks() {
+        return ast;
     }
 }
