@@ -2,6 +2,8 @@ package ch.tbz.pirasleandro;
 
 import java.util.HashMap;
 
+import ch.tbz.pirasleandro.AST.Expression.Value;
+
 public interface AST {
     public interface Line extends AST {
         public class Version implements Line {
@@ -10,37 +12,86 @@ public interface AST {
                 this.version = version;
             }
         }
+        public class LibraryImport implements Line {
+            public final String libId;
+            public LibraryImport(String libId) {
+                this.libId = libId;
+            }
+        }
         public class Print implements Line {
             public final Expression<?> value;
             public Print(Expression<?> value) {
                 this.value = value;
             }
         }
+        public class Input implements Line {
+            public final ID id;
+            public Input(ID id) {
+                this.id = id;
+            }
+        }
         public class VariableDeclaration implements Line {
-            public final String id;
+            public final ID id;
+            public final ID typeOf;
+            public final DataType type;
             public final Expression<?> value;
-            public VariableDeclaration(String id, Expression<?> value) {
+            private VariableDeclaration(ID id, ID typeOf, DataType type, Expression<?> value) {
+                this.id = id;
+                this.typeOf = typeOf;
+                this.type = type;
+                this.value = value;
+            }
+            public VariableDeclaration(ID id, Expression<?> value) {
+                this(id, null, null, value);
+            }
+            public VariableDeclaration(ID id) {
+                this(id, null, null, null);
+            }
+            public VariableDeclaration(ID id, DataType type) {
+                this(id, null, type, null);
+            }
+            public VariableDeclaration(ID id, ID typeOf) {
+                this(id, typeOf, null, null);
+            }
+        }
+        public class AssignToVariable {
+            public final ID id;
+            public final Expression<?> value;
+            public AssignToVariable(ID id, Expression<?> value) {
                 this.id = id;
                 this.value = value;
             }
         }
-        
+        public class Concatenate {
+            public final Value<String>[] strings;
+            public Concatenate(Value<String>[] strings) {
+                this.strings = strings;
+            }
+        }
+        public class Cast {
+            public final Expression<?> expression;
+            public final DataType type;
+            public Cast(Expression<?> expression, DataType type) {
+                this.expression = expression;
+                this.type = type;
+            }
+        }
     }
     public interface Block extends AST {
         public class FunctionDeclaration implements AST {
-            public final String id;
+            public final ID id;
             public final HashMap<String, DataType> parameters;
             public final AST[] body;
-            public FunctionDeclaration(String id, HashMap<String, DataType> parameters, AST[] body) {
+            public FunctionDeclaration(ID id, HashMap<String, DataType> parameters, AST[] body) {
                 this.id = id;
                 this.parameters = parameters;
                 this.body = body;
             }
         }
         public class BuckitDeclaration implements AST {
-            public final String id;
+            public final ID id;
             public final AST[] body;
-            public BuckitDeclaration(String id, AST[] body) {
+            public BuckitDeclaration(ID id, AST[] body) {
                 this.id = id;
                 this.body = body;
             }
@@ -98,10 +149,19 @@ public interface AST {
             }
         }
         public class VariableReference implements Expression<Object> {
-            public final String id;
-            public VariableReference(String id) {
+            public final ID id;
+            public VariableReference(ID id) {
                 this.id = id;
             }
+        }
+    }
+    public class ID {
+        public final String id;
+        public ID(String id) {
+            this.id = id;
+        }
+        public ID(Value<String> id) {
+            this.id = id.value;
         }
     }
     public enum DataType implements AST {
