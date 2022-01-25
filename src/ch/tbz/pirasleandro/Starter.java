@@ -2,6 +2,7 @@ package ch.tbz.pirasleandro;
 
 import java.util.ArrayList;
 import ch.tbz.pirasleandro.AST.Line.*;
+import ch.tbz.pirasleandro.AST.ID;
 import ch.tbz.pirasleandro.AST.Block.*;
 import ch.tbz.pirasleandro.AST.Expression.*;
 import ch.tbz.pirasleandro.AST.Expression.Comparison.ComparisonType;
@@ -27,11 +28,11 @@ public class Starter {
         AST[] code = {
             new Version("1.3"),
             new Print(new Value<String>("Hai World!!!1!!")),
-            new VariableDeclaration("uwu", new Value<String>("OWO")),
-            new Print(new VariableReference("uwu")),
+            new VariableDeclaration(new ID("uwu"), new Value<String>("OWO")),
+            new Print(new VariableReference(new ID("uwu"))),
             new IfStatement(
                 new Comparison(
-                    new VariableReference("uwu"),
+                    new VariableReference(new ID("uwu")),
                     ComparisonType.EQUALS,
                     new Value<String>("uwu")
                 ),
