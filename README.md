@@ -1,3 +1,6 @@
+*this didn't really go to plan... unfortunately I forgot to write a documentation too.*
+*I made a second attempt [here|https://github.com/pirasleandro/interpreter_v2] but that didn't really work out either*
+
 ## Use cases
 
 - [ ] execute LOLCODE file at given path
